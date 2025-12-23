@@ -1,0 +1,25 @@
+global:
+  storageClass: "" 
+
+mysql:
+  image: mysql:5.7
+  rootPassword: "rootpassword123"
+  dbName: wordpress
+  user: wp_user
+  password: wp_password
+  persistence:
+    size: 5Gi
+
+wordpress:
+  image: wordpress:latest
+  replicas: 2
+  persistence:
+    size: 10Gi
+    accessMode: ReadWriteMany
+
+nginx:
+  image: kalamkaar/custom-nginx:v1
+  replicas: 2
+  service:
+    type: NodePort
+    port: 80

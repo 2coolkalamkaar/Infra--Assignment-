@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-monitor
+  namespace: infra-assignment  # Lives where the App is
+  labels:
+    release: monitoring        # MUST match the Prometheus Helm Release name
+spec:
+  selector:
+    matchLabels:
+      app: nginx-proxy
+  namespaceSelector:
+    matchNames:
+      - infra-assignment
+  endpoints:
+  - port: metrics
+    interval: 15s
