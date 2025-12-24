@@ -1,20 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "==============================================="
-echo "🔥 STARTING CLEAN REBUILD (NO CONFLICTS)"
-echo "==============================================="
+echo "STARTING CLEAN BUILD"
 
-# 1. CLEANUP (Force delete everything)
-helm uninstall my-wp-stack --namespace infra-assignment 2>/dev/null || true
-kubectl delete pv mysql-pv wordpress-pv --grace-period=0 --force 2>/dev/null || true
-kubectl delete pvc mysql-pv-claim wp-pv-claim -n infra-assignment --grace-period=0 --force 2>/dev/null || true
-
-# 2. NUKE THE TEMPLATES FOLDER (Remove the hidden bad file)
-rm -rf ~/assignment/helm/wordpress-stack/templates
+#directories
 mkdir -p ~/assignment/helm/wordpress-stack/templates
 
-# 3. RE-CREATE VALUES.YAML
+
 cat <<EOF > ~/assignment/helm/wordpress-stack/values.yaml
 global:
   storageClass: "" 
@@ -42,8 +34,7 @@ nginx:
     type: NodePort
     port: 80
 EOF
-
-# 4. RE-CREATE PVC.YAML (Only Claims, NO Volumes)
+#PVC
 cat <<EOF > ~/assignment/helm/wordpress-stack/templates/pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -70,7 +61,7 @@ spec:
       storage: 5Gi
 EOF
 
-# 5. RE-CREATE SERVICES
+
 cat <<EOF > ~/assignment/helm/wordpress-stack/templates/services.yaml
 apiVersion: v1
 kind: Service
@@ -105,7 +96,6 @@ spec:
       targetPort: 80
 EOF
 
-# 6. RE-CREATE DEPLOYMENTS
 # MySQL
 cat <<EOF > ~/assignment/helm/wordpress-stack/templates/mysql-deployment.yaml
 apiVersion: apps/v1
@@ -246,12 +236,12 @@ spec:
 EOF
 
 # 8. APPLY AND INSTALL
-echo "🚀 Creating PVs Manually..."
+echo "Creating PVs Manually..."
 kubectl apply -f ~/assignment/manual-pvs.yaml
 
-echo "🚀 Installing Helm Chart..."
+echo " Installing Helm Chart..."
 helm install my-wp-stack ~/assignment/helm/wordpress-stack --namespace infra-assignment
 
-echo "✅ DONE! Checking pods..."
+echo "DONE! Checking pods..."
 sleep 5
 kubectl get pods -n infra-assignment

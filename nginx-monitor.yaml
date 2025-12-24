@@ -4,7 +4,7 @@ metadata:
   name: nginx-monitor
   namespace: infra-assignment  # Lives where the App is
   labels:
-    release: monitoring        # MUST match the Prometheus Helm Release name
+    release: monitoring        #matches the Prometheus Helm Release name
 spec:
   selector:
     matchLabels:
