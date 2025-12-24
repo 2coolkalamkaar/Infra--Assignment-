@@ -1,17 +1,17 @@
 
 
-## 📋 Project Overview
+## Project Overview
 This project deploys a highly available, scalable, and observable **WordPress** application stack on Kubernetes. It demonstrates advanced DevOps practices including **Helm Chart management**, **Custom Docker Builds**, **Prometheus Monitoring**, and **Auto-Scaling (HPA)**.
 
-### 🏗️ Architecture
+###  Architecture
 * **Frontend/Proxy:** Custom-built Nginx (OpenResty) with Lua support & Sidecar Exporter.
-* **Application:** WordPress (StatefulSet/Deployment) with HPA enabled.
+* **Application:** WordPress (Deployment) with HPA enabled.
 * **Database:** MySQL 5.7 with Persistent Storage.
 * **Observability:** Prometheus Operator stack with ServiceMonitors and Custom Alerts.
 
 ---
 
-## 🛠️ Directory Structure
+##  Directory Structure
 ```text
 assignment/
 ├── docker/             # Custom Dockerfiles (Nginx OpenResty build)
