@@ -53,10 +53,6 @@ COPY --from=builder /opt/openresty /opt/openresty
 # Add OpenResty to PATH
 ENV PATH=$PATH:/opt/openresty/nginx/sbin:/opt/openresty/bin
 
-# Forward logs
-RUN ln -sf /dev/stdout /opt/openresty/nginx/logs/access.log \
-    && ln -sf /dev/stderr /opt/openresty/nginx/logs/error.log
-
 # Copy custom configuration
 COPY nginx.conf /opt/openresty/nginx/conf/nginx.conf
 
